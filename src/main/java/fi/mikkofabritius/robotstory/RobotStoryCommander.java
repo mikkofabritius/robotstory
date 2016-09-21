@@ -1,25 +1,26 @@
 package fi.mikkofabritius.robotstory;
 
+import fi.mikkofabritius.robotstory.service.CommanderService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.context.annotation.ComponentScan;
 
 /**
- * the main class
+ * The main class.
+ *
+ * @author mikko.fabritius
  */
-@Controller
 @EnableAutoConfiguration
+@ComponentScan
 public class RobotStoryCommander {
-
-    @RequestMapping("/")
-    @ResponseBody
-    String root() {
-        return "Robot commander ready!";
-    }
+    private static final Logger LOG = LoggerFactory.getLogger(RobotStoryCommander.class);
 
     public static void main(String[] args) throws Exception {
-        SpringApplication.run(RobotStoryCommander.class, args);
+        LOG.info("Booting up Robot Commander");
+        ConfigurableApplicationContext context = SpringApplication.run(RobotStoryCommander.class, args);
+        context.getBean(CommanderService.class).initialize();
     }
 }
